@@ -1,4 +1,4 @@
-package com.uplus.DiscoveryService;
+package com.uplus.discoveryservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
