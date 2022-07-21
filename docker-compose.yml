@@ -1,0 +1,11 @@
+version: '3.3'
+
+services:
+        app:
+                container_name: discoveryservice
+                build:
+                        context: .
+                        dockerfile: Dockerfile
+                restart: always
+                ports:
+                        - "8761:8761"
