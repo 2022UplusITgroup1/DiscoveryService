@@ -1,11 +1,57 @@
 version: '3.3'
-
+ 
 services:
-        app:
+        discovery:
                 container_name: discoveryservice
                 build:
-                        context: .
+                        context: ./discovery
                         dockerfile: Dockerfile
                 restart: always
                 ports:
                         - "8761:8761"
+        apigateway:
+                container_name: apigateway
+                build:
+                        context: ./apigateway
+                        dockerfile: Dockerfile
+                restart: always
+                ports:
+                        - "8000:8000"
+                        - "8443:443"
+        redis:
+                container_name: redis
+                image: redis:latest
+                restart: always
+                ports:
+                        - 6379:6379
+                command: [ "redis-server", "--protected-mode", "no", "--bind", "0.0.0.0" ]
+                environment:
+                        - ALLOW_EMPTY_PASSWORD=yes
+        search:
+                container_name: searchservice_v1
+                build:
+                        context: ./search
+                        dockerfile: Dockerfile
+                depends_on:
+                        - redis
+                restart: always
+                ports:
+                        - "44421:44421"
+        product:
+                container_name: productservice_v1
+                build:
+                        context: ./product
+                        dockerfile: Dockerfile
+                depends_on:
+                        - redis
+                restart: always
+                ports:
+                        - "64421:64421"
+        order:
+                container_name: orderservice_v1
+                build:
+                        context: ./order
+                        dockerfile: Dockerfile
+                restart: always
+                ports:
+                        - "54421:54421"
